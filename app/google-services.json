@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "625943562868",
+    "project_id": "chat-it-cff53",
+    "storage_bucket": "chat-it-cff53.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625943562868:android:44049cd575303737465f21",
+        "android_client_info": {
+          "package_name": "com.chatit.chat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC50CdnnvzjdbIENA3MiP_JHbhKOVjyP7g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
