@@ -37,6 +37,10 @@ import coil.compose.rememberAsyncImagePainter
 import com.chatit.chat.intent.RegisterIntent
 import com.chatit.chat.state.RegisterState
 import com.chatit.chat.viewmodel.RegisterViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.messaging.FirebaseMessaging
 
 @Composable
 fun RegisterScreen(
@@ -97,6 +101,13 @@ fun RegisterScreen(
             }
             is RegisterState.Success -> LaunchedEffect(Unit) {
                 onRegistered()
+                FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+                    val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return@addOnSuccessListener
+                    FirebaseFirestore.getInstance().collection("users").document(uid)
+                        .set(mapOf("fcmToken" to token), SetOptions.merge())
+                        .addOnSuccessListener { println("FCM token updated ... $uid") }
+                        .addOnFailureListener { e -> println("Failed to update FCM token: ${e.message}") }
+                }
             }
             else -> {}
         }

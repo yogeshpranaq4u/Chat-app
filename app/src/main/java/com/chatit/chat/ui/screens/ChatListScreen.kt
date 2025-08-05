@@ -71,6 +71,8 @@ fun ChatListScreen(
                     val chats = (state as ChatListState.Loaded).chats
                     val users = (state as ChatListState.Loaded).users
 
+                    println("ChatListScreen .. $chats")
+
                     if (chats.isEmpty()) {
                         Text("No chats found", modifier = Modifier.align(Alignment.Center))
                     } else {
@@ -82,7 +84,7 @@ fun ChatListScreen(
                                 if (otherUser != null) {
                                     ChatListItem(chat, otherUser) {
                                         // You can use `index` here if needed
-                                        println("Clicked chat at position: $index")
+                                        println("Clicked chat at position: $chat // $otherUser")
                                         navController.navigate(Screen.ChatPage.createRoute(chat.chatId, otherUserId))
                                     }
                                 } else {

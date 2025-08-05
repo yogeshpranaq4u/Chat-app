@@ -34,7 +34,7 @@ class RegisterViewModel @Inject constructor(
     private fun registerUser(email: String, imageUriStr: String?) {
         _state.value = RegisterState.Loading
         val currentUser = auth.currentUser
-        println("RegisterScreen.registerUser .....  ${currentUser}")
+        println("RegisterScreen.registerUser .....  ${imageUriStr}")
 
         if (currentUser == null) {
             // For demo, sign in anonymously and then save user info
@@ -45,6 +45,7 @@ class RegisterViewModel @Inject constructor(
                 .addOnFailureListener {
                     _state.value = RegisterState.Error(it.message ?: "Registration failed")
                     println("RegisterScreen.registerUser ... ${it.cause} // ${it.message}")
+
                 }
         } else {
             saveUser(currentUser.uid, email, imageUriStr)
@@ -63,10 +64,12 @@ class RegisterViewModel @Inject constructor(
                         saveUserToFirestore(uid, email, url.toString())
                     }.addOnFailureListener {
                         _state.value = RegisterState.Error("Failed to get image download URL")
+                        println("RegisterScreen.Failed to get image download URL")
                     }
                 }
                 .addOnFailureListener {
                     _state.value = RegisterState.Error(it.message ?: "Image upload failed")
+                    println("RegisterScreen.Image upload failed")
                 }
         }
     }
@@ -80,6 +83,7 @@ class RegisterViewModel @Inject constructor(
             }
             .addOnFailureListener {
                 _state.value = RegisterState.Error(it.message ?: "Firestore update failed")
+                println("RegisterScreen.saveUserToFirestore")
             }
     }
 }

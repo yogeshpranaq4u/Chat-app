@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -36,6 +37,7 @@ fun ChatPageScreen(
     val uid = currentUser?.uid ?: ""
     var messageText by remember { mutableStateOf("") }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
+    val context = LocalContext.current
 
     // Image picker launcher
     val imagePickerLauncher = rememberLauncherForActivityResult(
@@ -45,13 +47,14 @@ fun ChatPageScreen(
         uri?.let {
             viewModel.process(
                 ChatPageIntent.SendMessage(chatId, "[Image]", "image", it.toString()),
-                uid
+                otherUserId, context
             )
         }
     }
 
     LaunchedEffect(chatId) {
-        viewModel.process(ChatPageIntent.LoadMessages(chatId), uid)
+        println("Clicked chat .. 11 // $chatId // $otherUserId")
+        viewModel.process(ChatPageIntent.LoadMessages(chatId), otherUserId, context)
     }
 
     Column(Modifier.fillMaxSize()) {
@@ -88,7 +91,11 @@ fun ChatPageScreen(
             IconButton(
                 onClick = {
                     if (messageText.isNotBlank()) {
-                        viewModel.process(ChatPageIntent.SendMessage(chatId, messageText, "text", null,), uid)
+                        viewModel.process(
+                            ChatPageIntent.SendMessage(chatId, messageText, "text", null,),
+                            otherUserId,
+                            context
+                        )
                         messageText = ""
                     }
                 }

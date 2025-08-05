@@ -44,6 +44,7 @@ fun UserListScreen(
     when (val s = state) {
         is ChatListState.Loaded -> {
             val users = s.users.values.filter { it.uid != uid }
+            println("UserListScreen .. $users")
             LazyColumn {
                 itemsIndexed(users) { index, user ->
                     ListItem(

@@ -56,12 +56,13 @@ class ChatListViewModel @Inject constructor(
                     return@addSnapshotListener
                 }
                 if (snapshot != null) {
+                    println("ChatListViewModel.loadChats ... ")
                     chatList.clear()
                     usersAlreadyInChat.clear()
-
                     for (doc in snapshot.documents) {
                         val chat = doc.toObject(Chat::class.java)
                         if (chat != null) {
+                            println("ChatListViewModel.loadChats ... ... $chat")
                             chatList.add(chat)
                             usersAlreadyInChat.addAll(chat.members.filter { it != uid })
                         }
@@ -105,7 +106,7 @@ class ChatListViewModel @Inject constructor(
 
         _state.value = ChatListState.Loaded(
             chats = chatList.sortedByDescending { it.timestamp },
-            users = filteredUsers
+            users = allUsers
         )
     }
 
